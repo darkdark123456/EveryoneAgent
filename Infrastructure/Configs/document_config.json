@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "write": {
+            "command": "python",
+            "args": [
+                "C:/Users/mzc228699/Documents/AIAgentProject/EveryoneAgent/Capability/Tools/write_server.py"
+            ],
+            "transport": "stdio"
+        }
+    }
+}

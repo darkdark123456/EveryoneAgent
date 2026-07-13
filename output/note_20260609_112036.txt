@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "description": "Long-term memory record for emotionally-aware Agent",
+  "fields": {
+    "timestamp": "ISO 8601 string, e.g., \"2024-05-20T14:23:18Z\"",
+    "session_id": "string, unique per conversation thread",
+    "user_utterance_summary": "string, concise paraphrase of user input",
+    "user_emotion_tag": "string, from controlled vocabulary: [curious, satisfied, confused, frustrated, grateful, hesitant, excited]",
+    "agent_intent": "string, e.g., \"clarify_assumption\", \"validate_emotion\", \"retrieve_past_context\"",
+    "topics": ["string"],
+    "linked_memory_ids": ["string"]
+  },
+  "example_record": {
+    "timestamp": "2024-05-20T14:23:18Z",
+    "session_id": "sess_abc123",
+    "user_utterance_summary": "asked how to add persistent memory to EveryoneAgent",
+    "user_emotion_tag": "curious",
+    "agent_intent": "propose_schema_and_store",
+    "topics": ["memory", "agent-design", "emotion"],
+    "linked_memory_ids": []
+  }
+}

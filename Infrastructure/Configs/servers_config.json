@@ -1,0 +1,22 @@
+{
+    "mcpServers": {
+        "weather": {
+            "command": "python",
+            "args": [
+                "C:/Users/mzc228699/Documents/AIAgentProject/EveryoneAgent/Capability/Tools/weather_server.py"
+            ],
+            "transport": "stdio"
+        },
+        "write": {
+            "command": "python",
+            "args": [
+                "C:/Users/mzc228699/Documents/AIAgentProject/EveryoneAgent/Capability/Tools/write_server.py"
+            ],
+            "transport": "stdio"
+        },
+        "amap-maps": {
+            "transport": "streamable_http",
+            "url": "https://mcp.api-inference.modelscope.net/89ef2b5c35b544/mcp"
+        }
+    }
+}

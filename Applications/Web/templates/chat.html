@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex h-screen relative">
+
+    <!-- 设置按钮 -->
+    <div class="absolute top-4 right-4 z-40">
+        <button onclick="toggleSettings()" class="bg-white border rounded px-3 py-2 hover:bg-gray-100">
+            ⚙ Settings
+        </button>
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- 左侧会话栏 -->
+    <!-- ========================= -->
+
+    <div class="
+        w-72
+        bg-gray-100
+        border-r
+        p-4
+        ">
+
+        <button onclick="createConversation()" class="
+            w-full
+            bg-blue-500
+            text-white
+            p-2
+            rounded
+            mb-4
+            ">
+            + 新建会话
+        </button>
+
+        <div id="conversation-list">
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- 右侧聊天区域 -->
+    <!-- ========================= -->
+
+    <div class="
+        flex-1
+        flex
+        flex-col
+        ">
+
+        <!-- 消息区域 -->
+
+        <div id="chat-box" class="
+            flex-1
+            overflow-y-auto
+            p-6
+            bg-gray-50
+            ">
+
+        </div>
+
+        <!-- 输入区域 -->
+
+        <div class="
+            border-t
+            p-4
+            flex
+            ">
+
+            <input id="message-input" type="text" placeholder="输入消息..." class="
+                flex-1
+                border
+                rounded
+                p-2
+                ">
+
+            <button onclick="sendMessage()" class="
+                ml-2
+                bg-blue-500
+                text-white
+                px-4
+                rounded
+                ">
+
+                发送
+
+            </button>
+
+        </div>
+    </div>
+
+
+
+
+    {% include "components/settings.html" %}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+    // ==================================
+    // 当前选中的会话ID
+    // ==================================
+
+    let currentConversationId = null
+    let conversion_count = 1
+
+    // ==================================
+    // 页面加载
+    // ==================================
+
+    window.onload = async function () {
+        await loadConversations()
+    }
+
+    function toggleSettings() {
+        const panel =
+            document.getElementById(
+                "settings-panel"
+            )
+
+        panel.classList.toggle(
+            "hidden"
+        )
+    }
+
+
+
+    // ==================================
+    // 获取会话列表
+    // ==================================
+
+    async function loadConversations() {
+        const response =
+            await fetch(
+                "/conversation/list"
+            )
+
+        const conversations =
+            await response.json()
+
+        const container =
+            document.getElementById(
+                "conversation-list"
+            )
+
+        container.innerHTML = ""
+
+        conversations.forEach(
+            conversation => {
+                container.innerHTML += `
+
+                <div
+
+                    onclick="
+                        selectConversation(
+                            ${conversation.id}
+                        )
+                    "
+
+                    class="
+                    p-2
+                    mb-2
+                    bg-white
+                    rounded
+                    cursor-pointer
+                    hover:bg-gray-200
+                    "
+
+                >
+
+                    ${conversation.title}
+
+                </div>
+
+                `
+            }
+        )
+    }
+
+
+    // ==================================
+    // 创建会话
+    // ==================================
+
+    async function createConversation() {
+        const response =
+            await fetch(
+                "/conversation/create",
+                {
+                    method: "POST",
+
+                    headers:
+                    {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify(
+                        {
+                            title: "用户新对话" + conversion_count.toString()
+                        }
+                    )
+                }
+            )
+        ++conversion_count
+        const data = await response.json()
+        currentConversationId = data.id
+        document.getElementById(
+            "chat-box"
+        ).innerHTML = ""
+
+        await loadConversations()
+    }
+
+
+    // ==================================
+    // 切换会话
+    // ==================================
+
+    async function selectConversation(
+        conversationId
+    ) {
+        currentConversationId =
+            conversationId
+
+        await loadHistory(
+            conversationId
+        )
+    }
+
+
+    // ==================================
+    // 加载历史消息
+    // ==================================
+
+    async function loadHistory(id) {
+        currentConversationId = id;
+
+        const response = await fetch(
+            `/conversation/history/${id}`
+        );
+
+        const messages =
+            await response.json();
+
+        const chatBox =
+            document.getElementById(
+                "chat-box"
+            );
+
+        chatBox.innerHTML = "";
+
+        messages.forEach(msg => {
+            chatBox.innerHTML += `
+                <div>
+                    <b>${msg.role}</b>:
+                    ${msg.content}
+                </div>
+            `;
+        });
+    }
+
+
+    // ==================================
+    // 消息渲染
+    // ==================================
+
+    function appendMessage(
+        role,
+        content
+    ) {
+        const chatBox =
+            document.getElementById(
+                "chat-box"
+            )
+
+        const align =
+            role === "user"
+                ? "text-right"
+                : "text-left"
+
+        chatBox.innerHTML += `
+
+        <div
+            class="
+            mb-4
+            ${align}
+            "
+        >
+
+            <div
+                class="
+                inline-block
+                bg-white
+                p-3
+                rounded
+                shadow
+                max-w-3xl
+                "
+            >
+
+                ${content}
+
+            </div>
+
+        </div>
+
+        `
+
+        chatBox.scrollTop =
+            chatBox.scrollHeight
+    }
+
+
+    // ==================================
+    // 发送消息
+    // ==================================
+
+    async function sendMessage() {
+        if (
+            currentConversationId
+            ===
+            null
+        ) {
+            alert(
+                "请先创建会话"
+            )
+
+            return
+        }
+
+        const input =
+            document.getElementById(
+                "message-input"
+            )
+
+        const message =
+            input.value.trim()
+
+        if (
+            message.length === 0
+        ) {
+            return
+        }
+
+        appendMessage(
+            "user",
+            message
+        )
+
+        input.value = ""
+
+        const response =
+            await fetch(
+                "/chat",
+                {
+                    method: "POST",
+
+                    headers:
+                    {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify(
+                        {
+                            conversation_id:
+                                currentConversationId,
+                            message: message
+                        }
+                    )
+                }
+            )
+
+        const data = await response.json()
+
+        appendMessage(
+            "assistant",
+            data.response
+        )
+    }
+
+
+    // ==================================
+    // 回车发送
+    // ==================================
+
+    document
+        .getElementById(
+            "message-input"
+        )
+        .addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key === "Enter"
+                ) {
+                    sendMessage()
+                }
+            }
+        )
+
+</script>
+
+{% endblock %}

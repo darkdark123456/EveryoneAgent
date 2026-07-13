@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-md w-96">
+        <h1 class="text-2xl font-bold mb-6">
+            登录
+        </h1>
+
+        <form id="login-form">
+            <input id="email" type="email" placeholder="邮箱" class="border w-full p-2 mb-4 rounded" />
+
+            <input id="password" type="password" placeholder="密码" class="border w-full p-2 mb-4 rounded" />
+
+            <button type="submit" class="bg-blue-500 text-white w-full p-2 rounded">
+                登录
+            </button>
+        </form>
+
+        <div class="mt-4">
+            <a href="/register" class="text-blue-500">
+                注册账号
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+
+            if (response.ok) {
+                window.location.href = "/chat";
+            } else {
+                alert("登录失败");
+            }
+        });
+</script>
+
+{% endblock %}

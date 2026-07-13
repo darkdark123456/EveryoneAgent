@@ -1,0 +1,76 @@
+<!-- 设置面板 默认隐藏 -->
+<div id="settings-panel" class="hidden absolute top-16 right-4 w-80 bg-white border shadow-lg rounded p-4 z-50">
+    <div class="mb-8">
+        <h3 class="text-sm font-semibold mb-3">📧 Email</h3>
+        <input id="email" placeholder="163邮箱" class="w-full border p-2 mb-2 rounded">
+        <input id="auth_code" placeholder="授权码" class="w-full border p-2 rounded">
+
+    </div>
+
+    <div class="mb-8">
+        <h3 class="text-sm font-semibold mb-3">🔑 OpenAI API Key</h3>
+        <input id="api-key" placeholder="OpenAI API Key" class="w-full border p-2 mb-2 rounded">
+    </div>
+
+    <div class="mb-8">
+        <h3 class="text-sm font-semibold mb-3">🗝️ 通义千问 API Key</h3>
+        <input id="tongyi-key" placeholder="DashScope API Key" class="w-full border p-2 mb-2 rounded">
+    </div>
+
+
+    <div class="mb-8">
+        <h3 class="text-sm font-semibold mb-3">🌤️ OpenWeather API Key</h3>
+        <input id="weather-key" placeholder="OpenWeather天气密钥" class="w-full border p-2 mb-2 rounded">
+    </div>
+
+
+
+    <div class="mb-4">
+        <h3 class="text-sm font-semibold mb-2">📚 RAG</h3>
+        <input type="file" id="rag-file" multiple class="text-sm">
+        <button class="bg-blue-500 text-white px-3 py-1 rounded mt-2 text-sm">
+            上传文档
+        </button>
+    </div>
+
+
+    <div class="mb-4">
+        <h3 class="text-sm font-semibold mb-2">📝 Planner</h3>
+        <input id="planner_steps" placeholder="最大步骤数" class="w-full border p-1.5 rounded text-sm">
+    </div>
+
+
+    <div class="mb-4">
+        <h3 class="text-sm font-semibold mb-2">🤖 本地模型选择 Model</h3>
+        <select id="select-model" class="w-full border p-1.5 rounded text-sm">
+            <option value="qwen-plus">qwen-plus</option>
+            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+            <option value="local-qwen3b">本地 vLLM Qwen3B</option>
+            <option value="qwen-turbo">qwen-turbo</option>
+        </select>
+    </div>
+
+
+    <!-- Memory记忆配置模块 -->
+    <div class="mb-8">
+        <h3 class="text-sm font-semibold mb-3">🧠 Memory</h3>
+        <input id="history_limit" placeholder="历史保留条数" class="w-full border p-2 rounded">
+    </div>
+
+
+    <button onclick="saveEmailConfig()" class="mt-3 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        保存配置
+    </button>
+</div>
+
+<script>
+
+    document.addEventListener('click', function (e) {
+        const panel = document.getElementById('settings-panel')
+        const btn = e.target.closest('button')
+        if (!btn && !panel.contains(e.target)) {
+            panel.classList.add('hidden')
+        }
+    })
+
+</script>

@@ -1,0 +1,1 @@
+save_memory() 已实现：支持schema校验、JSONL分片存储、轻量摘要生成；已集成至主循环；示例调用可用；文件路径：./output/note_20260609_121045.txt。下一步需暴露HTTP接口或CLI入口，供Goal/Planner模块调用。

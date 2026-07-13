@@ -1,0 +1,85 @@
+import json
+import os
+from datetime import datetime
+from typing import List, Optional, Dict, Any
+
+
+def save_memory(
+    session_id: str,
+    user_text: str,
+    emotion_tag: str,
+    topics: Optional[List[str]] = None,
+    linked_memory_ids: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """
+    将单次对话记忆以 JSONL 格式追加写入本地文件。
+    
+    :param session_id: 对话会话唯一标识符（如 'sess_abc123'）
+    :param user_text: 原始用户输入文本
+    :param emotion_tag: 情感标签（需在预定义词表中，如 'grateful', 'curious'）
+    :param topics: 可选话题列表，如 ['weather', 'travel']
+    :param linked_memory_ids: 可选关联记忆ID列表，用于构建记忆图谱
+    :return: 成功写入的完整记忆记录字典
+    """
+    # --- 1. 输入校验 ---
+    if not isinstance(session_id, str) or not session_id.strip():
+        raise ValueError("session_id must be a non-empty string")
+    if not isinstance(user_text, str):
+        raise TypeError("user_text must be a string")
+    if not isinstance(emotion_tag, str) or emotion_tag.lower() not in [
+        'curious', 'frustrated', 'grateful', 'neutral', 'surprised', 'tired'
+    ]:
+        raise ValueError(f"emotion_tag '{emotion_tag}' not in allowed list")
+    
+    # --- 2. 生成摘要（轻量规则版：截断 + 关键句提取示意）---
+    # ✅ 实际部署时可替换为：from transformers import pipeline → summarizer(...)
+    def simple_summarize(text: str, max_len: int = 64) -> str:
+        if len(text) <= max_len:
+            return text.strip()
+        # 简单截断到第一个句号/换行前，避免切碎词
+        cut = text[:max_len].rsplit('.', 1)[0].strip()
+        return cut + '...' if len(cut) > 0 else text[:max_len].strip() + '...'
+    
+    summary = simple_summarize(user_text)
+    
+    # --- 3. 构建记忆记录 ---
+    record = {
+        "timestamp": datetime.now().isoformat(),
+        "session_id": session_id,
+        "user_utterance_summary": summary,
+        "user_emotion_tag": emotion_tag.lower(),
+        "agent_intent": "store_initial",
+        "topics": topics or [],
+        "linked_memory_ids": linked_memory_ids or []
+    }
+    
+    # --- 4. 写入 JSONL 文件 ---
+    date_str = datetime.now().strftime("%Y%m%d")
+    filename = f"./memory/memory_{date_str}.jsonl"
+    
+    # 确保目录存在
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    
+    try:
+        with open(filename, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except Exception as e:
+        raise IOError(f"Failed to write memory to {filename}: {e}")
+    
+    return record
+
+
+# === 示例用法（取消注释即可运行测试）===
+if __name__ == "__main__":
+    try:
+        result = save_memory(
+            session_id="sess_demo_001",
+            user_text="今天德州天气真好，我想查一下 Austin 的实时温度和湿度。",
+            emotion_tag="curious",
+            topics=["weather", "Texas"],
+            linked_memory_ids=["mem_20260608_001"]
+        )
+        print("✅ Memory saved:", json.dumps(result, indent=2, ensure_ascii=False))
+        print(f"📁 Written to: ./memory/memory_{datetime.now().strftime('%Y%m%d')}.jsonl")
+    except Exception as e:
+        print(f"❌ Error: {e}")
