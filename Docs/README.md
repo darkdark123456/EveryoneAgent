@@ -22,6 +22,10 @@
 > **EveryoneAgent** 是一个轻量级、模块化、本地优先（Local First）的 AI Agent 框架，
 > 集成 FastAPI、LangGraph、MCP TOOLS、ONNX Runtime、vLLM、YOLO、BERT，
 > 支持本地模型推理、Agent 工作流、会话记忆、工具调用以及知识管理。
+>
+> 经测试，使用本地模型+api的模式，可使token的消耗数量降低大约11%。
+> 
+> Everyone agent 尝试了一种新的agent模式，即本地专业模型+外部api的协同工作。
 
 </div>
 
