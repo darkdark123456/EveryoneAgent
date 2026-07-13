@@ -6,7 +6,7 @@ English | [简体中文](./README.md)
 
 <img src="assets/logo.svg" width="180"/>
 
-# EveryoneAgent
+# EveryoneAgent V1.0
 
 ### A Modular AI Agent Framework for Local AI Intelligence
 
@@ -23,13 +23,13 @@ English | [简体中文](./README.md)
 </div>
 
 
-EveryoneAgent is a lightweight, modular, local-first AI agent framework that integrates FastAPI, LangGraph, MCP Tools, ONNX Runtime, vLLM, YOLO, and BERT. It supports local model inference, agent workflows, session memory, tool calls, and knowledge management.
+> **EveryoneAgent** is a lightweight, modular, local-first AI agent framework that integrates FastAPI, LangGraph, MCP Tools, ONNX Runtime, vLLM, YOLO, and BERT. It supports local model inference, agent workflows, session memory, tool calls, and knowledge management.
 
-EveryoneAgent explores a new agent model: the collaborative work of a local specialized model and an external API.
+> EveryoneAgent explores a new agent model: the collaborative work of a local specialized model and an external API.
 
-Testing has shown that using the local model + API model reduces token consumption by approximately 11%.
+> Testing has shown that using the local model + API model reduces token consumption by approximately 11%.
 
-This effectively solves specialized business problems within enterprises while reducing the risk of enterprise local data leakage to public networks.
+> This effectively solves specialized business problems within enterprises while reducing the risk of enterprise local data leakage to public networks.
 
 
 ---
