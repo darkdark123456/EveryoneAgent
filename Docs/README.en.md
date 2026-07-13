@@ -1,3 +1,4 @@
+English | [简体中文](./README.md)
 # 🚀 EveryoneAgent
 
 <div align="center">
