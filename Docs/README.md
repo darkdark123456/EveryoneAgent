@@ -1,4 +1,4 @@
-# 🚀 EveryoneAgent V1.0
+# 🚀 EveryoneAgent
 
 <div align="center">
 
