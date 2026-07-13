@@ -5,7 +5,7 @@
 
 <img src="assets/logo.svg" width="180"/>
 
-# EveryoneAgent v1.0
+# EveryoneAgent V1.0
 
 ### A Modular AI Agent Framework for Local AI Inference
 
