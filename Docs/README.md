@@ -5,7 +5,7 @@
 
 <img src="assets/logo.svg" width="180"/>
 
-# EveryoneAgent
+# EveryoneAgent v1.0
 
 ### A Modular AI Agent Framework for Local AI Inference
 
@@ -23,9 +23,9 @@
 > 集成 FastAPI、LangGraph、MCP TOOLS、ONNX Runtime、vLLM、YOLO、BERT，
 > 支持本地模型推理、Agent 工作流、会话记忆、工具调用以及知识管理。
 >
-> 经测试，使用本地模型+api的模式，可使token的消耗数量降低大约11%。
+> 经测试，使用本地模型+API的模式，可使Token的消耗数量降低大约11%。
 > 
-> Everyone agent 尝试了一种新的agent模式，即本地专业模型+外部api的协同工作。
+> Everyone Agent 尝试了一种新的Agent模式，即本地专业模型+外部API的协同工作。在能有效解决企业中的专门业务问题的同时，减少了企业本地数据向公有网络泄露的风险。
 
 </div>
 
